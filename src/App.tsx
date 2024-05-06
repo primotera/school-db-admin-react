@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
+
 import './App.css';
+import { Admin, AuthProvider, Resource } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
+
+const BASE_URL = 'http://192.168.1.16'
+
+const authProvider: AuthProvider = {
+  login: (params) => fetch({
+    method: 'POST',
+    url:`${BASE_URL}/api/user/login`,
+    
+  })
+} 
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+<Admin requireAuth={true} authProvider={authProvider} dataProvider={simpleRestProvider('http://192.168.1.16')}>
+  <Resource name='schools'></Resource>
+</Admin>
   );
 }
-
 export default App;
