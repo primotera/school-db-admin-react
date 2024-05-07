@@ -1,6 +1,6 @@
 import { AuthProvider, UserIdentity } from "react-admin";
 
-export const BASE_URL =  process.env.BASE_URL || '/api'
+export const BASE_URL =  process.env.BASE_URL || 'https://schools.acadec.net/api'
 
 export const authProvider: AuthProvider = {
     login: (params) => postData(`${BASE_URL}/user/login`, { email: params.username, password: params.password }).then(response => {
