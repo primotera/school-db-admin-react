@@ -1,23 +1,38 @@
 
 import './App.css';
-import { Admin, AuthProvider, Resource } from 'react-admin';
-import simpleRestProvider from 'ra-data-simple-rest';
+import { Admin, Resource } from 'react-admin';
+import { SchoolCreate, SchoolEdit, SchoolList } from './School';
+import { BASE_URL, authProvider } from './authProvider';
+import { myDataProvider } from './dataProvider';
+import { DomainCreate, DomainEdit, DomainList } from './Domain';
+import { FormationCreate, FormationEdit, FormationList } from './Formation';
 
-const BASE_URL = 'http://192.168.1.16'
-
-const authProvider: AuthProvider = {
-  login: (params) => fetch({
-    method: 'POST',
-    url:`${BASE_URL}/api/user/login`,
-    
-  })
-} 
 
 function App() {
   return (
-<Admin requireAuth={true} authProvider={authProvider} dataProvider={simpleRestProvider('http://192.168.1.16')}>
-  <Resource name='schools'></Resource>
-</Admin>
+    <Admin requireAuth={true} authProvider={authProvider} dataProvider={myDataProvider(BASE_URL)}>
+      <Resource name='schools'
+        create={SchoolCreate}
+        list={SchoolList}
+        edit={SchoolEdit}
+        recordRepresentation={"school_name"}
+      ></Resource>
+      <Resource
+        create={DomainCreate}
+        name="subdomains"
+        recordRepresentation={"name"}
+        list={DomainList}
+        edit={DomainEdit}
+      ></Resource>
+      <Resource
+        name="formations"
+        list={FormationList}
+        edit={FormationEdit}
+        create={FormationCreate}
+      ></Resource>
+      <Resource name="formation_grades" recordRepresentation={"formation_grade"}></Resource>
+      <Resource name="users" recordRepresentation={"name"}></Resource>
+    </Admin>
   );
 }
 export default App;
